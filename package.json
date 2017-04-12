@@ -1,0 +1,28 @@
+{
+  "name": "jira-agile-api",
+  "version": "1.0.0",
+  "description": "JIRA agile REST API bridge",
+  "scripts": {
+    "dev-server": "./node_modules/http_auth_proxy/bin/http-auth-proxy-server.js"
+  },
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/blazeyo/jira-agile-api.git"
+  },
+  "keywords": [
+    "jira",
+    "rest"
+  ],
+  "author": "Błażej Owczarczyk",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/blazeyo/jira-agile-api/issues"
+  },
+  "homepage": "https://github.com/blazeyo/jira-agile-api#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "http_auth_proxy": "^1.0.3"
+  }
+}
