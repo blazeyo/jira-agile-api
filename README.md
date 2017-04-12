@@ -8,13 +8,11 @@ Javascript wrapper around jira agile REST api.
 
 ## Usage
 
-`
+```
 var api = require('jira-agile-api');
-
 api.setEndpoint('https://myjira.com');
-
 api.board.getList().then(function (boards) { console.log(boards); });
-`
+```
 
 See `src/index.js` for a list of available methods.
 
