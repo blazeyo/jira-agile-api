@@ -4,12 +4,12 @@ Javascript wrapper around jira agile REST api.
 
 ## Installation
 
-`npm install jira-agile-api`
+`npm install jira-agile-api-client`
 
 ## Usage
 
 ```
-var api = require('jira-agile-api');
+var api = require('jira-agile-api-client');
 api.setEndpoint('https://myjira.com');
 api.board.getList().then(function (boards) { console.log(boards); });
 ```
