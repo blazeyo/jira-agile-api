@@ -1,5 +1,5 @@
 {
-  "name": "jira-agile-api",
+  "name": "jira-agile-api-client",
   "version": "1.0.0",
   "description": "JIRA agile REST API bridge",
   "scripts": {
