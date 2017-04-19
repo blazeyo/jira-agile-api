@@ -1,32 +1,15 @@
 # Jira agile api client
-
 Javascript wrapper around jira agile REST api.
 
 ## Installation
-
 `npm install jira-agile-api-client`
 
-## Usage
+## Setup
 
-```javascript
-var api = require('jira-agile-api-client');
-api.setEndpoint('https://myjira.com');
-
-api.board.getList().then(function (boards) { 
-  console.log(boards); 
-}).catch(function (error) {
-  console.log(error);
-});
-```
-
-See `src/index.js` for a list of available methods.
-
-## Node.js
-
+### Node.js
 ```javascript
 var api = require('jira-agile-api-client');
 var btoa = require('btoa');
-
 
 // Import fetch polyfill.
 global.fetch = require('node-fetch');
@@ -38,22 +21,44 @@ api.setEndpoint('https://jira.example.com');
 api.setSetting('headers', {
   'Authorization': 'Basic '+btoa('USERNAME:PASSWORD')
 });
+```
 
+### Browser apps - online
+The app either needs to be in the same domain or CORS should be set up.
+```javascript
+var api = require('jira-agile-api-client');
+api.setEndpoint('https://jira.example.com');
+```
+
+### Browser apps - local
+Start with `npm run dev-server` and provide jira url, your username and password. Use `http://localhost:3001` as endpoint.
+```javascript
+var api = require('jira-agile-api-client');
+api.setEndpoint('http://localhost:3001');
+```
+
+## Usage
+
+### Get day-by-day sprint statistics.
+```javascript
 api.util.getSprintHistory(boardId, sprintId).then(function (stats) {
   console.log(stats);
 }).catch(function (error) {
-  console.log(error);s
+  console.log(error);
 });
 ```
 
-## Web apps
-
-### Online
-
+### Get all boards
 ```javascript
-var api = require('jira-agile-api-client');
-api.setEndpoint('https://myjira.com');
+api.board.getList().then(function (boards) {
+  console.log(boards);
+}).catch(function (error) {
+  console.log(error);
+});
+```
 
+### Get all sprints in a board
+```javascript
 api.board.getSprints(boardId).then(function (boards) {
   console.log(boards);
 }).catch(function (error) {
@@ -61,8 +66,22 @@ api.board.getSprints(boardId).then(function (boards) {
 });
 ```
 
-* CORS needs to be set up.
+### Create a new sprint
+```javascript
+api.sprint.create(name, boardId).then(function (sprint) {
+  console.log(sprint);
+}).catch(function (error) {
+  console.log(error);
+});
+```
 
-### Local
+### Move issues to a sprint
+```javascript
+api.sprint.moveIssuesToSprint(sprintId, ['TEST-1', 'TEST-2']).then(function (result) {
+  console.log(result);
+}).catch(function (error) {
+  console.log(error);
+});
+```
 
-Start with `npm run dev-server` and provide jira url, your username and password. Use `http://localhost:3001` as endpoint.
+See `src/index.js` for a full list of available methods.
