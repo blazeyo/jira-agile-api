@@ -145,3 +145,15 @@ api.util = {
 };
 
 export default api;
+
+export const setSetting = api.setSetting;
+export const setEndpoint = api.setEndpoint;
+export const sendGetRequest = api.sendGetRequest;
+export const sendRequestWithPayload = api.sendRequestWithPayload;
+export const sendDeleteRequest = api.sendDeleteRequest;
+
+export const board = api.board;
+export const backlog = api.backlog;
+export const issue = api.issue;
+export const sprint = api.sprint;
+export const util = api.util;
