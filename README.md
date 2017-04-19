@@ -43,6 +43,22 @@ api.setEndpoint('http://localhost:3001');
 ```javascript
 api.util.getSprintHistory(boardId, sprintId).then(function (stats) {
   console.log(stats);
+
+  // stats
+  // [{
+  //   "date": "2017-01-01",
+  //   "stats": {
+  //     "To Do": 10.5,
+  //     "Done": 5,
+  //     ...
+  //   }
+  // }, {
+  //   "date": "2017-01-02",
+  //   "stats": {
+  //     "To Do": 9,
+  //     "Done": 6,
+  //     ...
+  // }]
 }).catch(function (error) {
   console.log(error);
 });
