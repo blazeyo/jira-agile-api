@@ -22,8 +22,7 @@ const sendRequest = (uri, settings, query = {}) =>
   fetch(url(uri, query), { ...defaultSettings, ...settings })
     .then(response => response.json());
 
-
-export const api = {};
+const api = {};
 
 api.setSetting = (key, value) =>
   defaultSettings[key] = value;
@@ -144,3 +143,5 @@ api.sprint.getProperty = (sprintId, propertyKey, params) =>
 api.util = {
   getSprintHistory
 };
+
+export default api;

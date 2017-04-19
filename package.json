@@ -1,6 +1,6 @@
 {
   "name": "jira-agile-api-client",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "JIRA agile REST API bridge",
   "scripts": {
     "dev-server": "./node_modules/http_auth_proxy/bin/http-auth-proxy-server.js"
