@@ -1,4 +1,4 @@
-import getSprintHistory from './util/getSprintHistory';
+import { getSprintHistory, getSprintWithHistory } from './util/getSprintHistory';
 
 let endpointUrl = 'http://localhost:3001';
 const prefix = 'rest/agile/1.0';
@@ -141,7 +141,8 @@ api.sprint.getProperty = (sprintId, propertyKey, params) =>
   sendGetRequest(`sprint/${sprintId}/properties/${propertyKey}`, params);
 
 api.util = {
-  getSprintHistory
+  getSprintHistory,
+  getSprintWithHistory
 };
 
 export default api;

@@ -41,10 +41,10 @@ api.setEndpoint('http://localhost:3001');
 
 ### Get day-by-day sprint statistics.
 ```javascript
-api.util.getSprintHistory(boardId, sprintId).then(function (stats) {
-  console.log(stats);
+api.util.getSprintWithHistory(boardId, sprintId).then(function (result) {
+  console.log(result.history);
 
-  // stats
+  // result.history
   // [{
   //   "date": "2017-01-01",
   //   "stats": {
@@ -59,6 +59,9 @@ api.util.getSprintHistory(boardId, sprintId).then(function (stats) {
   //     "Done": 6,
   //     ...
   // }]
+
+  console.log(result.sprint);
+  console.log(result.issues);
 }).catch(function (error) {
   console.log(error);
 });

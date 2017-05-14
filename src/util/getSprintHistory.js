@@ -207,8 +207,10 @@ const getAllIssues = (boardId, sprintId) => {
  * @param {String} boardId
  * @param {String} sprintId
  * @returns {Promise}
+ *
+ * @deprecated Use getSprintWithHistory instead.
  */
-const getSprintHistory = (boardId, sprintId) => {
+export const getSprintHistory = (boardId, sprintId) => {
   return new Promise((resolve, reject) => {
     let sprint, issues;
 
@@ -224,4 +226,29 @@ const getSprintHistory = (boardId, sprintId) => {
   });
 };
 
-export default getSprintHistory;
+/**
+ * Returns a promise to fetch historical statistics for given sprint.
+ *
+ * @param {String} boardId
+ * @param {String} sprintId
+ * @returns {Promise}
+ */
+export const getSprintWithHistory = (boardId, sprintId) => {
+  return new Promise((resolve, reject) => {
+    let sprint, issues;
+
+    sprintEndpoint.getSingle(sprintId).then(response => {
+      sprint = response;
+      return getAllIssues(boardId, sprintId);
+    }).then(response => {
+      issues = response;
+      return issueEndpoint.getEstimation(issues[0].key, { boardId: boardId });
+    }).then(({ fieldId }) => {
+      resolve({
+        history: getSprintHistoryFromIssues(issues, sprint, fieldId),
+        sprint,
+        issues
+      });
+    }).catch(error => reject(error));
+  });
+};
