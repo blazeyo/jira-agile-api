@@ -46,7 +46,7 @@ api.backlog = {};
  *   Array of issue ids, eg ['PR-1'].
  */
 api.backlog.moveIssuesToBacklog = issues =>
-  sendRequestWithPayload('backlog/issue', {issues: issues})
+  sendRequestWithPayload('backlog/issue', {issues: issues});
 
 api.board = {};
 
@@ -134,7 +134,7 @@ api.sprint.getPropertiesKeys = (sprintId, params) =>
 api.sprint.deleteProperty = (sprintId, propertyKey) =>
   sendDeleteRequest(`sprint/${sprintId}/properties/${propertyKey}`);
 
-api.sprint.setProperty = (sprintId, value) =>
+api.sprint.setProperty = (sprintId, propertyKey, value) =>
   sendRequestWithPayload(`sprint/${sprintId}/properties/${propertyKey}`, { value }, 'PUT');
 
 api.sprint.getProperty = (sprintId, propertyKey, params) =>
