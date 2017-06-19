@@ -172,33 +172,35 @@ const getSprintHistoryFromIssues = (issues, sprint, estimationField) => {
  * @returns {Promise}
  */
 const getAllIssues = (boardId, sprintId) => {
-  return new Promise((resolve, reject) => {
-    let results = [];
-    let finished = null;
+  let results = [];
 
-    (function getPage() {
-      if (!finished) new Promise(resolvePage => {
-        log('Calling issues endpoint');
-        boardEndpoint.getSprintIssues(boardId, sprintId, { expand: 'changelog', startAt: results.length }).then(page => {
-          const { total, issues } = page;
+  const getPageOfIssues = () => {
+    return boardEndpoint.getSprintIssues(
+      boardId,
+      sprintId,
+      {
+        expand: 'changelog',
+        startAt: results.length,
+        // maxResults: 50, // This is the default.
+      }
+    ).then(page => {
+      const { total, issues } = page;
 
-          results = results.concat(issues);
-          log(`Received ${issues.length} issues. ${results.length} total.`);
+      results = results.concat(issues);
+      log(`Received page ${issues.length} issues of ${total} total. Results so far: ${results.length}.`);
 
-          if (results.length === total) {
-            finished = true;
-            resolve(results);
-          }
+      // We have received all results. Note: the total may have changed since we
+      // requested the first page of results.
+      if (results.length >= total) {
+        return results;
+      }
 
-          resolvePage();
-        })
-      }).catch(error =>
-        reject(error)
-      ).then(
-        getPage.bind(null)
-      );
-    })();
-  });
+      // Get another page of issues.
+      return getPageOfIssues();
+    });
+  };
+
+  return getPageOfIssues();
 };
 
 /**
@@ -211,19 +213,20 @@ const getAllIssues = (boardId, sprintId) => {
  * @deprecated Use getSprintWithHistory instead.
  */
 export const getSprintHistory = (boardId, sprintId) => {
-  return new Promise((resolve, reject) => {
-    let sprint, issues;
+  let sprint, issues;
 
+  return Promise.all([
     sprintEndpoint.getSingle(sprintId).then(response => {
       sprint = response;
-      return getAllIssues(boardId, sprintId);
-    }).then(response => {
+    }),
+    getAllIssues(boardId, sprintId).then(response => {
       issues = response;
-      return issueEndpoint.getEstimation(issues[0].key, { boardId: boardId });
-    }).then(({ fieldId }) => {
-      resolve(getSprintHistoryFromIssues(issues, sprint, fieldId));
-    }).catch(error => reject(error));
-  });
+    })
+  ]).then(
+    () => issueEndpoint.getEstimation(issues[0].key, { boardId: boardId })
+  ).then(
+    ({ fieldId }) => getSprintHistoryFromIssues(issues, sprint, fieldId)
+  );
 };
 
 /**
@@ -234,21 +237,23 @@ export const getSprintHistory = (boardId, sprintId) => {
  * @returns {Promise}
  */
 export const getSprintWithHistory = (boardId, sprintId) => {
-  return new Promise((resolve, reject) => {
-    let sprint, issues;
+  let sprint, issues;
 
+  // Retrieve sprint info and sprint issues in parallel.
+  return Promise.all([
     sprintEndpoint.getSingle(sprintId).then(response => {
       sprint = response;
-      return getAllIssues(boardId, sprintId);
-    }).then(response => {
+    }),
+    getAllIssues(boardId, sprintId).then(response => {
       issues = response;
-      return issueEndpoint.getEstimation(issues[0].key, { boardId: boardId });
-    }).then(({ fieldId }) => {
-      resolve({
-        history: getSprintHistoryFromIssues(issues, sprint, fieldId),
-        sprint,
-        issues
-      });
-    }).catch(error => reject(error));
+    })
+  ]).then(
+    () => issueEndpoint.getEstimation(issues[0].key, { boardId: boardId })
+  ).then(({ fieldId }) => {
+    return {
+      history: getSprintHistoryFromIssues(issues, sprint, fieldId),
+      sprint,
+      issues
+    };
   });
 };
