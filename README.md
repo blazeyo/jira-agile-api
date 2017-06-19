@@ -1,5 +1,5 @@
 # Jira agile api client
-Javascript wrapper around jira agile REST api.
+This is a Javascript wrapper around the [JIRA Software Cloud REST API](https://docs.atlassian.com/jira-software/REST/cloud/).
 
 ## Installation
 `npm install jira-agile-api-client`
